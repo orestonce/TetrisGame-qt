@@ -1,4 +1,4 @@
-#include "TetrisGameWindow.h"
+#include "gui/TetrisGameWindow.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])

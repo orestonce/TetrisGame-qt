@@ -4,25 +4,25 @@
 namespace restonce {
 
 Point::Point(int line, int row)
-    : line_(line), row_(row)
+    : m_line(line), m_row(row)
 {
 
 }
 int Point::line () const
 {
-    return line_;
+    return m_line;
 }
 int Point::row () const
 {
-    return row_;
+    return m_row;
 }
 void Point::setLine (int line)
 {
-    line_ = line;
+    m_line = line;
 }
 void Point::setRow (int row)
 {
-    row_ = row;
+    m_row = row;
 }
 
 struct Box {
@@ -89,16 +89,16 @@ static Box dbs[] = {
 };
 
 RandomBox::RandomBox(TetrisGame &game_, std::mt19937 &rd)
-    : game(game_), basicPosition(0, 3)
+    : m_game(game_), m_basicPosition(0, 3)
 {
-    boxpos = rd() % 28;
+    m_boxpos = rd() % 28;
 }
 
 bool RandomBox::valid ()
 {
     for(Point const& p: getMyBoxes ()) {
-        if ( !game.valid (p.line (), p.row ()) ||
-             game.exists (p.line (), p.row ()) ) {
+        if ( !m_game.valid (p.line (), p.row ()) ||
+             m_game.exists (p.line (), p.row ()) ) {
             return false;
         }
     }
@@ -108,49 +108,49 @@ bool RandomBox::valid ()
 bool RandomBox::down ()
 {
     for(Point const& p : getNextBoxes(1, 0)) {
-        if ( !game.valid (p.line (), p.row ()) ||
-             game.exists (p.line (), p.row ()) ) {
+        if ( !m_game.valid (p.line (), p.row ()) ||
+             m_game.exists (p.line (), p.row ()) ) {
             this->set ();
             return false;
         }
     }
-    basicPosition.setLine (basicPosition.line () +1);
+    m_basicPosition.setLine (m_basicPosition.line () +1);
     return true;
 }
 
 bool RandomBox::left ()
 {
     for(Point const& p : getNextBoxes(0, -1)) {
-        if ( !game.valid (p.line (), p.row ()) ||
-             game.exists (p.line (), p.row ()) ) {
+        if ( !m_game.valid (p.line (), p.row ()) ||
+             m_game.exists (p.line (), p.row ()) ) {
             return false;
         }
     }
-    basicPosition.setRow (basicPosition.row () -1);
+    m_basicPosition.setRow (m_basicPosition.row () -1);
     return true;
 }
 
 bool RandomBox::right ()
 {
     for(Point const& p : getNextBoxes(0, 1)) {
-        if ( !game.valid (p.line (), p.row ()) ||
-             game.exists (p.line (), p.row ()) ) {
+        if ( !m_game.valid (p.line (), p.row ()) ||
+             m_game.exists (p.line (), p.row ()) ) {
             return false;
         }
     }
-    basicPosition.setRow (basicPosition.row ()+1);
+    m_basicPosition.setRow (m_basicPosition.row ()+1);
     return true;
 }
 
 bool RandomBox::transform ()
 {
     for(Point const& p : getNextBoxes()) {
-        if ( !game.valid (p.line (), p.row ()) ||
-             game.exists (p.line (), p.row ()) ) {
+        if ( !m_game.valid (p.line (), p.row ()) ||
+             m_game.exists (p.line (), p.row ()) ) {
             return false;
         }
     }
-    boxpos = dbs[boxpos].next;
+    m_boxpos = dbs[m_boxpos].next;
     return true;
 }
 
@@ -158,9 +158,9 @@ std::vector<Point> RandomBox::getMyBoxes () const
 {
     std::vector<Point> mypoints;
 
-    for(Point const& p : dbs[boxpos].boxes ) {
-        mypoints.push_back (Point(basicPosition.line () +p.line (),
-                                  basicPosition.row () + p.row ()));
+    for(Point const& p : dbs[m_boxpos].boxes ) {
+        mypoints.push_back (Point(m_basicPosition.line () +p.line (),
+                                  m_basicPosition.row () + p.row ()));
     }
     return mypoints;
 }
@@ -179,17 +179,17 @@ std::vector<Point> RandomBox::getNextBoxes () const
 {
     std::vector<Point> nextBoxes;
 
-    for(Point const& p : dbs[ dbs[boxpos].next ].boxes ) {
-        nextBoxes.push_back (Point(p.line ()+basicPosition.line (),
-                                   p.row () + basicPosition.row ()));
+    for(Point const& p : dbs[ dbs[m_boxpos].next ].boxes ) {
+        nextBoxes.push_back (Point(p.line ()+m_basicPosition.line (),
+                                   p.row () + m_basicPosition.row ()));
     }
-    return nextBoxes;
+    return std::move(nextBoxes);
 }
 
 void RandomBox::set ()
 {
     for(Point const& p : getMyBoxes ()) {
-        game.set (p.line (), p.row ());
+        m_game.set (p.line (), p.row ());
     }
 }
 

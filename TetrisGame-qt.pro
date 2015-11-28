@@ -13,22 +13,27 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        TetrisGameWindow.cpp \
-    TetrisGame.cpp \
-    RandomBox.cpp
+		core/TetrisGame.cpp \
+    core/RandomBox.cpp \
+    core/Subject.cpp \
+    core/Observer.cpp \
+	gui/TetrisGameWindow.cpp
 
-HEADERS  += TetrisGameWindow.h \
-    TetrisGame.h \
-    RandomBox.h
+HEADERS  += core/TetrisGame.h \
+    core/RandomBox.h \
+    core/Subject.h \
+    core/Observer.h \
+	gui/TetrisGameWindow.h
 
-FORMS    += TetrisGameWindow.ui
+FORMS    += gui/TetrisGameWindow.ui
 QMAKE_CXXFLAGS += -std=c++11
 
 RESOURCES += \
-    images.qrc
+	gui/images.qrc
 
 OTHER_FILES += \
-    icon.rc
+	gui/icon.rc \
+    README.txt
 
-RC_FILE += icon.rc
+RC_FILE += gui/icon.rc
 

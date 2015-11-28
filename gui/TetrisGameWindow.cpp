@@ -1,7 +1,7 @@
 #include "TetrisGameWindow.h"
 #include "ui_TetrisGameWindow.h"
-#include "TetrisGame.h"
-#include "RandomBox.h"
+#include "core/TetrisGame.h"
+#include "core/RandomBox.h"
 #include <QPainter>
 #include <QTimer>
 #include <QKeyEvent>
@@ -11,34 +11,34 @@ TetrisGameWindow::TetrisGameWindow(QWidget *parent) :
     ui(new Ui::TetrisGameWindow)
 {
     ui->setupUi(this);
-    game = new restonce::TetrisGame;
-    timer = new QTimer(this);
-    connect (timer, SIGNAL(timeout()),
+    m_game = new restonce::TetrisGame;
+    m_timer = new QTimer(this);
+    connect (m_timer, SIGNAL(timeout()),
              this, SLOT(slot_timeout()) );
     this->setFixedSize (this->size ());
+    m_game->attachObserver (this);
 }
 
 void TetrisGameWindow::slot_timeout ()
 {
-    game->timeout ();
-    repaint ();
+    m_game->timeout ();
 }
 
 TetrisGameWindow::~TetrisGameWindow()
 {
     delete ui;
+    delete m_game;
 }
 
 void TetrisGameWindow::on_pushButton_clicked()
 {
-    timer->start (1000);
-    game->start ();
-    repaint ();
+    m_timer->start (1000);
+    m_game->start ();
 }
 
 void TetrisGameWindow::paintEvent (QPaintEvent *)
 {
-    switch ( game->getGameStatus () )
+    switch ( m_game->getGameStatus () )
     {
     case restonce::TetrisGame::GameStatus::runing:
         ui->label->setText (trUtf8 ("正在游戏"));
@@ -54,13 +54,13 @@ void TetrisGameWindow::paintEvent (QPaintEvent *)
         break;
     }
     QPainter painter(this);
-    QPoint p2( basePosition.x ()+ boxSize*restonce::TetrisGame::ROW,
-               basePosition.y () );
-    QPoint p3( basePosition.x (),
-               basePosition.y () +boxSize*restonce::TetrisGame::LINE);
-    QPoint p4 ( basePosition.x () + boxSize*restonce::TetrisGame::ROW,
-                basePosition.y () + boxSize*restonce::TetrisGame::LINE);
-    QPoint p1(basePosition);
+    QPoint p2( m_basePosition.x ()+ m_boxSize*restonce::TetrisGame::ROW,
+               m_basePosition.y () );
+    QPoint p3( m_basePosition.x (),
+               m_basePosition.y () +m_boxSize*restonce::TetrisGame::LINE);
+    QPoint p4 ( m_basePosition.x () + m_boxSize*restonce::TetrisGame::ROW,
+                m_basePosition.y () + m_boxSize*restonce::TetrisGame::LINE);
+    QPoint p1(m_basePosition);
 
     painter.drawLine (p1, p2);
     painter.drawLine (p2, p4);
@@ -69,20 +69,20 @@ void TetrisGameWindow::paintEvent (QPaintEvent *)
 
     for(int l=0; l<restonce::TetrisGame::LINE; ++l) {
         for(int r=0; r<restonce::TetrisGame::ROW; ++r) {
-            QPoint p(basePosition.x () + r*boxSize,
-                     basePosition.y () + l*boxSize);
-            if ( game->exists (l, r)
-                 || game->inActiveBox (l,r)) {
-                painter.drawImage ( p, QImage(":/boxes/box.png"));
+            QPoint p(m_basePosition.x () + r*m_boxSize,
+                     m_basePosition.y () + l*m_boxSize);
+            if ( m_game->exists (l, r)
+                 || m_game->inActiveBox (l,r)) {
+                painter.drawImage ( p, QImage(":/boxes/images/box.png"));
             }
         }
     }
-    std::shared_ptr<restonce::RandomBox> nextBox = game->getNextBox ();
+    std::shared_ptr<restonce::RandomBox> nextBox = m_game->getNextBox ();
     if ( nextBox ) {
         for(restonce::Point const& p : nextBox->getMyBoxes () ) {
-            painter.drawImage (QPoint(baseNextPosition.x () +boxSize*p.row (),
-                                      baseNextPosition.y () + boxSize*p.line ()),
-                               QImage(":/boxes/box.png"));
+            painter.drawImage (QPoint(m_baseNextPosition.x () +m_boxSize*p.row (),
+                                      m_baseNextPosition.y () + m_boxSize*p.line ()),
+                               QImage(":/boxes/images/box.png"));
         }
     }
 }
@@ -92,17 +92,21 @@ void TetrisGameWindow::keyPressEvent (QKeyEvent *e)
     switch (e->key ())
     {
     case Qt::Key_Down:
-        game->down ();
+        m_game->down ();
         break;
     case Qt::Key_Left:
-        game->left ();
+        m_game->left ();
         break;
     case Qt::Key_Right:
-        game->right ();
+        m_game->right ();
         break;
     case Qt::Key_Up:
-        game->transform ();
+        m_game->transform ();
         break;
     }
+}
+
+void TetrisGameWindow::onSubjectChanged ()
+{
     repaint ();
 }

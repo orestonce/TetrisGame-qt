@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPoint>
+#include "core/Observer.h"
 
 namespace Ui {
 class TetrisGameWindow;
@@ -13,7 +14,8 @@ namespace restonce {
 class TetrisGame;
 }
 
-class TetrisGameWindow : public QWidget
+class TetrisGameWindow
+        : public QWidget, public restonce::Observer
 {
     Q_OBJECT
 
@@ -23,16 +25,17 @@ public:
 protected:
     void paintEvent (QPaintEvent *);
     void keyPressEvent (QKeyEvent *);
+    virtual void onSubjectChanged () override final;
 private slots:
     void on_pushButton_clicked();
     void slot_timeout();
 private:
     Ui::TetrisGameWindow *ui;
-    restonce::TetrisGame *game;
-    int boxSize = 24;
-    QPoint basePosition = QPoint(10, 10);
-    QPoint baseNextPosition = QPoint(200, 240);
-    QTimer *timer;
+    restonce::TetrisGame *m_game;
+    int m_boxSize = 24;
+    QPoint m_basePosition = QPoint(10, 10);
+    QPoint m_baseNextPosition = QPoint(200, 240);
+    QTimer *m_timer;
 };
 
 #endif // TETRISGAMEWINDOW_H
