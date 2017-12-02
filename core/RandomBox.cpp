@@ -92,6 +92,7 @@ RandomBox::RandomBox(TetrisGame &game_, std::mt19937 &rd)
     : m_game(game_), m_basicPosition(0, 3)
 {
     m_boxpos = rd() % 28;
+    m_color = 1 + ( rd() % 17 );
 }
 
 bool RandomBox::valid ()
@@ -189,8 +190,13 @@ std::vector<Point> RandomBox::getNextBoxes () const
 void RandomBox::set ()
 {
     for(Point const& p : getMyBoxes ()) {
-        m_game.set (p.line (), p.row ());
+        m_game.set (p.line (), p.row (), m_color);
     }
+}
+
+int RandomBox::color() const
+{
+    return m_color;
 }
 
 bool RandomBox::inBody (int line, int row) const

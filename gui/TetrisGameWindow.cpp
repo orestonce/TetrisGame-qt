@@ -71,18 +71,39 @@ void TetrisGameWindow::paintEvent (QPaintEvent *)
         for(int r=0; r<restonce::TetrisGame::ROW; ++r) {
             QPoint p(m_basePosition.x () + r*m_boxSize,
                      m_basePosition.y () + l*m_boxSize);
-            if ( m_game->exists (l, r)
-                 || m_game->inActiveBox (l,r)) {
-                painter.drawImage ( p, QImage(":/boxes/images/box.png"));
+
+            int color = 0;
+
+            if ( m_game->exists(l, r) )
+            {
+                color = m_game->color(l, r);
             }
+            else if ( m_game->getActiveBox() && m_game->getActiveBox()->inBody(l, r) )
+            {
+                color = m_game->getActiveBox()->color();
+            }
+
+            if ( color <= 0 )
+                continue;
+
+            QString imgpath;
+
+            imgpath.sprintf(":/boxes/images/box%d.png", color);
+
+            painter.drawImage ( p, QImage(imgpath) );
+
         }
     }
     std::shared_ptr<restonce::RandomBox> nextBox = m_game->getNextBox ();
     if ( nextBox ) {
+        QString imgpath;
+        imgpath.sprintf(":/boxes/images/box%d.png", nextBox->color() );
+
         for(restonce::Point const& p : nextBox->getMyBoxes () ) {
+
             painter.drawImage (QPoint(m_baseNextPosition.x () +m_boxSize*p.row (),
                                       m_baseNextPosition.y () + m_boxSize*p.line ()),
-                               QImage(":/boxes/images/box.png"));
+                               QImage(imgpath));
         }
     }
 }

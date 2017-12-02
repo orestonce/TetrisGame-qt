@@ -33,6 +33,7 @@ public:
     bool inBody(int line, int row) const;
     // 将自己填充到游戏地图上
     void set();
+    int color() const;
     // 读取自己的所有方块
     std::vector<Point> getMyBoxes() const;
 private:
@@ -42,6 +43,7 @@ private:
     TetrisGame& m_game;
     Point m_basicPosition; // 自己的左上角位置
     int m_boxpos; // 自己是box列表中的第几个
+    int m_color;
 };
 
 } // namespace restonce

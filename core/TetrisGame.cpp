@@ -21,6 +21,7 @@ void TetrisGame::init ()
     for(int l=0; l<LINE; ++l) {
         for(int r=0; r<ROW; ++r) {
             m_map[l][r] = false;
+            m_colorMap[l][r] = 0;
         }
     }
     m_gameStatus = GameStatus::undo;
@@ -141,17 +142,20 @@ bool TetrisGame::exists (int line, int row) const
     return m_map[line][row];
 }
 
-bool TetrisGame::inActiveBox(int line, int row) const
+int TetrisGame::color(int line, int row) const
 {
-    if ( m_activebox ) {
-        return m_activebox->inBody(line, row);
-    }
-    return false;
+    return m_colorMap[line][row];
 }
 
-void TetrisGame::set (int line, int row)
+std::shared_ptr<RandomBox> TetrisGame::getActiveBox() const
+{
+    return m_activebox;
+}
+
+void TetrisGame::set (int line, int row, int color)
 {
     m_map[line][row] = true;
+    m_colorMap[line][row] = color;
 }
 
 std::shared_ptr<RandomBox> TetrisGame::getNextBox () const
