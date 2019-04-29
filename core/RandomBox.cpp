@@ -184,7 +184,7 @@ std::vector<Point> RandomBox::getNextBoxes () const
         nextBoxes.push_back (Point(p.line ()+m_basicPosition.line (),
                                    p.row () + m_basicPosition.row ()));
     }
-    return std::move(nextBoxes);
+    return nextBoxes;
 }
 
 void RandomBox::set ()
