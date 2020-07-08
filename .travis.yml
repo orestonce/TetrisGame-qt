@@ -1,0 +1,7 @@
+language: c++
+os: 
+- windows
+script:
+- qmake
+git:
+  depth: 1
