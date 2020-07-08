@@ -1,7 +1,7 @@
-language: Qt
+language: c++
 os: 
 - windows
 script:
-- qmake
+- dir C:\Qt\5.15.0
 git:
   depth: 1
