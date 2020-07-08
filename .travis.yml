@@ -1,4 +1,4 @@
-language: qt
+language: Qt
 os: 
 - windows
 script:
