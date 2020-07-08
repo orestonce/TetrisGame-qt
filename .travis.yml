@@ -2,6 +2,6 @@ language: c++
 os: 
 - windows
 script:
-- dir C:\Qt\5.15.0
+- dir C:\\Qt\\5.15.0
 git:
   depth: 1
