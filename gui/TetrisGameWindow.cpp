@@ -54,13 +54,13 @@ void TetrisGameWindow::paintEvent (QPaintEvent *)
         break;
     }
     QPainter painter(this);
-    QPoint p2( m_basePosition.x ()+ m_boxSize*restonce::TetrisGame::ROW,
-               m_basePosition.y () );
-    QPoint p3( m_basePosition.x (),
-               m_basePosition.y () +m_boxSize*restonce::TetrisGame::LINE);
-    QPoint p4 ( m_basePosition.x () + m_boxSize*restonce::TetrisGame::ROW,
-                m_basePosition.y () + m_boxSize*restonce::TetrisGame::LINE);
-    QPoint p1(m_basePosition);
+    QPoint p2( m_basePosition.x ()+ m_boxSize*restonce::TetrisGame::ROW+1,
+               m_basePosition.y () -1);
+    QPoint p3( m_basePosition.x ()-1,
+               m_basePosition.y () +m_boxSize*restonce::TetrisGame::LINE+1);
+    QPoint p4 ( m_basePosition.x () + m_boxSize*restonce::TetrisGame::ROW+1,
+                m_basePosition.y () + m_boxSize*restonce::TetrisGame::LINE+1);
+    QPoint p1(m_basePosition.x()-1, m_basePosition.y()-1);
 
     painter.drawLine (p1, p2);
     painter.drawLine (p2, p4);
