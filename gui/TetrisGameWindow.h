@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QPoint>
-#include "core/Observer.h"
+#include "core/Subject.h"
 
 namespace Ui {
 class TetrisGameWindow;
@@ -23,9 +23,9 @@ public:
     explicit TetrisGameWindow(QWidget *parent = 0);
     ~TetrisGameWindow();
 protected:
-    void paintEvent (QPaintEvent *) override final;
-    void keyPressEvent (QKeyEvent *) override final;
-    virtual void onSubjectChanged () override final;
+    void paintEvent(QPaintEvent *) override final;
+    void keyPressEvent(QKeyEvent *) override final;
+    virtual void onSubjectChanged() override final;
 private slots:
     void on_pushButton_clicked();
     void slot_timeout();

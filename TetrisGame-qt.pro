@@ -16,13 +16,11 @@ SOURCES += main.cpp\
 		core/TetrisGame.cpp \
     core/RandomBox.cpp \
     core/Subject.cpp \
-    core/Observer.cpp \
 	gui/TetrisGameWindow.cpp
 
 HEADERS  += core/TetrisGame.h \
     core/RandomBox.h \
     core/Subject.h \
-    core/Observer.h \
 	gui/TetrisGameWindow.h
 
 FORMS    += gui/TetrisGameWindow.ui

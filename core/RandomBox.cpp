@@ -8,19 +8,19 @@ Point::Point(int line, int row)
 {
 
 }
-int Point::line () const
+int Point::line() const
 {
     return m_line;
 }
-int Point::row () const
+int Point::row() const
 {
     return m_row;
 }
-void Point::setLine (int line)
+void Point::setLine(int line)
 {
     m_line = line;
 }
-void Point::setRow (int row)
+void Point::setRow(int row)
 {
     m_row = row;
 }
@@ -92,62 +92,62 @@ RandomBox::RandomBox(TetrisGame &game_, std::mt19937 &rd)
     : m_game(game_), m_basicPosition(0, 3)
 {
     m_boxpos = rd() % 28;
-    m_color = 1 + ( rd() % 17 );
+    m_color = 1 +(rd() % 17);
 }
 
-bool RandomBox::valid ()
+bool RandomBox::valid()
 {
-    for(Point const& p: getMyBoxes ()) {
-        if ( !m_game.valid (p.line (), p.row ()) ||
-             m_game.exists (p.line (), p.row ()) ) {
+    for(Point const& p: getMyBoxes()) {
+        if(!m_game.valid(p.line(), p.row()) ||
+             m_game.exists(p.line(), p.row())) {
             return false;
         }
     }
     return true;
 }
 
-bool RandomBox::down ()
+bool RandomBox::down()
 {
     for(Point const& p : getNextBoxes(1, 0)) {
-        if ( !m_game.valid (p.line (), p.row ()) ||
-             m_game.exists (p.line (), p.row ()) ) {
-            this->set ();
+        if(!m_game.valid(p.line(), p.row()) ||
+             m_game.exists(p.line(), p.row())) {
+            this->set();
             return false;
         }
     }
-    m_basicPosition.setLine (m_basicPosition.line () +1);
+    m_basicPosition.setLine(m_basicPosition.line() +1);
     return true;
 }
 
-bool RandomBox::left ()
+bool RandomBox::left()
 {
     for(Point const& p : getNextBoxes(0, -1)) {
-        if ( !m_game.valid (p.line (), p.row ()) ||
-             m_game.exists (p.line (), p.row ()) ) {
+        if(!m_game.valid(p.line(), p.row()) ||
+             m_game.exists(p.line(), p.row())) {
             return false;
         }
     }
-    m_basicPosition.setRow (m_basicPosition.row () -1);
+    m_basicPosition.setRow(m_basicPosition.row() -1);
     return true;
 }
 
-bool RandomBox::right ()
+bool RandomBox::right()
 {
     for(Point const& p : getNextBoxes(0, 1)) {
-        if ( !m_game.valid (p.line (), p.row ()) ||
-             m_game.exists (p.line (), p.row ()) ) {
+        if(!m_game.valid(p.line(), p.row()) ||
+             m_game.exists(p.line(), p.row())) {
             return false;
         }
     }
-    m_basicPosition.setRow (m_basicPosition.row ()+1);
+    m_basicPosition.setRow(m_basicPosition.row()+1);
     return true;
 }
 
-bool RandomBox::transform ()
+bool RandomBox::transform()
 {
     for(Point const& p : getNextBoxes()) {
-        if ( !m_game.valid (p.line (), p.row ()) ||
-             m_game.exists (p.line (), p.row ()) ) {
+        if(!m_game.valid(p.line(), p.row()) ||
+             m_game.exists(p.line(), p.row())) {
             return false;
         }
     }
@@ -155,42 +155,42 @@ bool RandomBox::transform ()
     return true;
 }
 
-std::vector<Point> RandomBox::getMyBoxes () const
+std::vector<Point> RandomBox::getMyBoxes() const
 {
     std::vector<Point> mypoints;
 
-    for(Point const& p : dbs[m_boxpos].boxes ) {
-        mypoints.push_back (Point(m_basicPosition.line () +p.line (),
-                                  m_basicPosition.row () + p.row ()));
+    for(Point const& p : dbs[m_boxpos].boxes) {
+        mypoints.push_back(Point(m_basicPosition.line() +p.line(),
+                                  m_basicPosition.row() + p.row()));
     }
     return mypoints;
 }
 
-std::vector<Point> RandomBox::getNextBoxes (int line_inc, int row_inc) const
+std::vector<Point> RandomBox::getNextBoxes(int line_inc, int row_inc) const
 {
     std::vector<Point> nextBoxes;
 
-    for(Point const& p : getMyBoxes () ) {
-        nextBoxes.push_back (Point(p.line ()+line_inc, p.row () + row_inc));
+    for(Point const& p : getMyBoxes()) {
+        nextBoxes.push_back(Point(p.line()+line_inc, p.row() + row_inc));
     }
     return nextBoxes;
 }
 
-std::vector<Point> RandomBox::getNextBoxes () const
+std::vector<Point> RandomBox::getNextBoxes() const
 {
     std::vector<Point> nextBoxes;
 
-    for(Point const& p : dbs[ dbs[m_boxpos].next ].boxes ) {
-        nextBoxes.push_back (Point(p.line ()+m_basicPosition.line (),
-                                   p.row () + m_basicPosition.row ()));
+    for(Point const& p : dbs[ dbs[m_boxpos].next ].boxes) {
+        nextBoxes.push_back(Point(p.line()+m_basicPosition.line(),
+                                   p.row() + m_basicPosition.row()));
     }
     return nextBoxes;
 }
 
-void RandomBox::set ()
+void RandomBox::set()
 {
-    for(Point const& p : getMyBoxes ()) {
-        m_game.set (p.line (), p.row (), m_color);
+    for(Point const& p : getMyBoxes()) {
+        m_game.set(p.line(), p.row(), m_color);
     }
 }
 
@@ -199,10 +199,10 @@ int RandomBox::color() const
     return m_color;
 }
 
-bool RandomBox::inBody (int line, int row) const
+bool RandomBox::inBody(int line, int row) const
 {
-    for(Point const& p : getMyBoxes () ) {
-        if ( p.line () == line && p.row () == row) {
+    for(Point const& p : getMyBoxes()) {
+        if(p.line() == line && p.row() == row) {
             return true;
         }
     }

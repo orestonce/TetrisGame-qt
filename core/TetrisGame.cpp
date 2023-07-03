@@ -8,7 +8,7 @@ TetrisGame::TetrisGame()
 {
     m_gameStatus = GameStatus::undo;
     m_winStatus = WinStatus::lose;
-    m_rd.seed (time(NULL));
+    m_rd.seed(time(NULL));
     for(int l=0; l<LINE; ++l) {
         for(int r=0; r<ROW; ++r) {
             m_map[l][r] = false;
@@ -16,7 +16,7 @@ TetrisGame::TetrisGame()
     }
 }
 
-void TetrisGame::init ()
+void TetrisGame::init()
 {
     for(int l=0; l<LINE; ++l) {
         for(int r=0; r<ROW; ++r) {
@@ -30,35 +30,35 @@ void TetrisGame::init ()
     m_nextBox = std::make_shared<RandomBox>(*this, m_rd);
 }
 
-void TetrisGame::start ()
+void TetrisGame::start()
 {
-    if ( m_gameStatus == GameStatus::runing ) {
+    if(m_gameStatus == GameStatus::runing) {
         throw std::logic_error("Game is runing !");
     }
     init();
     m_gameStatus = GameStatus::runing;
-    notifyObservers ();
+    notifyObservers();
 }
 
-void TetrisGame::timeout ()
+void TetrisGame::timeout()
 {
-    if ( m_gameStatus != GameStatus::runing ) {
+    if(m_gameStatus != GameStatus::runing) {
         return  ;
     }
-    if ( !m_activebox->down () ) {
+    if(!m_activebox->down()) {
         // 此处准备消行
         for(int line=LINE-1; line>=0; --line) {
             bool isFull = true;
             for(int row=0; row<ROW; ++row) {
-                if ( !this->exists (line, row) ) {
+                if(!this->exists(line, row)) {
                     isFull = false;
                     break;
                 }
             }
-            if ( isFull ) {
+            if(isFull) {
                 for(int l=line; l>=0; --l) {
                     for(int r=0; r<ROW; ++r) {
-                        if ( l ==0 ) {
+                        if(l ==0) {
                             m_map[l][r] = false;
                         } else {
                             m_map[l][r] = m_map[l-1][r];
@@ -71,72 +71,72 @@ void TetrisGame::timeout ()
         //
         m_activebox =m_nextBox;
         m_nextBox=std::make_shared<RandomBox>(*this, m_rd);
-        if ( !m_activebox->valid () ) {
+        if(!m_activebox->valid()) {
             // 新产生的方块不合法，说明你已经输了
             m_gameStatus = GameStatus::stop;
             m_winStatus = WinStatus::lose;
         }
     }
-    notifyObservers ();
+    notifyObservers();
 }
 
 void TetrisGame::transform()
 {
-    if ( m_activebox->transform () ) {
-        notifyObservers ();
+    if(m_activebox->transform()) {
+        notifyObservers();
     }
 }
 
 void TetrisGame::down()
 {
-    timeout ();
+    timeout();
 }
 
 void TetrisGame::left()
 {
-    if ( m_activebox->left () ) {
-        notifyObservers ();
+    if(m_activebox->left()) {
+        notifyObservers();
     }
 }
 
 void TetrisGame::right()
 {
-    if ( m_activebox->right () ) {
-        notifyObservers ();
+    if(m_activebox->right()) {
+        notifyObservers();
     }
 }
 
 void TetrisGame::stop()
 {
-    if ( m_gameStatus == GameStatus::runing ) {
+    if(m_gameStatus == GameStatus::runing) {
         m_gameStatus = GameStatus::stop;
         m_winStatus = WinStatus::lose;
-        notifyObservers ();
+        notifyObservers();
     }
 }
 
-TetrisGame::GameStatus TetrisGame::getGameStatus () const
+TetrisGame::GameStatus TetrisGame::getGameStatus() const
 {
     return m_gameStatus;
 }
 
-TetrisGame::WinStatus TetrisGame::getWinStatus () const
+TetrisGame::WinStatus TetrisGame::getWinStatus() const
 {
-    if ( m_gameStatus != GameStatus::stop ) {
+    if(m_gameStatus != GameStatus::stop) {
         throw std::logic_error("Game is not stop !");
     }
     return m_winStatus;
 }
 
-bool TetrisGame::valid (int line, int row) const
+bool TetrisGame::valid(int line, int row) const
 {
     return line >=0 && line < LINE &&
             row >=0 && row < ROW;
 }
 
-bool TetrisGame::exists (int line, int row) const
+bool TetrisGame::exists(int line, int row) const
 {
-    if ( !valid (line, row) ) {
+    if(!valid(line, row)) {
         throw std::out_of_range("Game position not exists !");
     }
     return m_map[line][row];
@@ -152,13 +152,13 @@ std::shared_ptr<RandomBox> TetrisGame::getActiveBox() const
     return m_activebox;
 }
 
-void TetrisGame::set (int line, int row, int color)
+void TetrisGame::set(int line, int row, int color)
 {
     m_map[line][row] = true;
     m_colorMap[line][row] = color;
 }
 
-std::shared_ptr<RandomBox> TetrisGame::getNextBox () const
+std::shared_ptr<RandomBox> TetrisGame::getNextBox() const
 {
     return m_nextBox;
 }

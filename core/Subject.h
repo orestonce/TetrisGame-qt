@@ -5,7 +5,14 @@
 
 namespace restonce {
 
-class Observer;
+class Observer
+{
+protected:
+    Observer() = default;
+    virtual ~Observer() = default;
+public:
+    virtual void onSubjectChanged() = 0;
+};
 
 class Subject
 {
