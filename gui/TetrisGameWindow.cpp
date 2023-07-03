@@ -86,9 +86,7 @@ void TetrisGameWindow::paintEvent(QPaintEvent *)
             if(color <= 0)
                 continue;
 
-            QString imgpath;
-
-            imgpath.asprintf(":/boxes/images/box%d.png", color);
+            QString imgpath = QString::asprintf(":/boxes/images/box%d.jpg", color);
 
             painter.drawImage(p, QImage(imgpath));
 
@@ -96,8 +94,7 @@ void TetrisGameWindow::paintEvent(QPaintEvent *)
     }
     std::shared_ptr<restonce::RandomBox> nextBox = m_game->getNextBox();
     if(nextBox) {
-        QString imgpath;
-        imgpath.asprintf(":/boxes/images/box%d.png", nextBox->color());
+        QString imgpath = QString::asprintf(":/boxes/images/box%d.jpg", nextBox->color());
 
         for(restonce::Point const& p : nextBox->getMyBoxes()) {
 

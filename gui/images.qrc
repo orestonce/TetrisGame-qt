@@ -1,21 +1,21 @@
 <RCC>
     <qresource prefix="/boxes">
-        <file>images/box1.png</file>
-        <file>images/box2.png</file>
-        <file>images/box3.png</file>
-        <file>images/box4.png</file>
-        <file>images/box5.png</file>
-        <file>images/box6.png</file>
-        <file>images/box7.png</file>
-        <file>images/box8.png</file>
-        <file>images/box9.png</file>
-        <file>images/box10.png</file>
-        <file>images/box11.png</file>
-        <file>images/box12.png</file>
-        <file>images/box13.png</file>
-        <file>images/box14.png</file>
-        <file>images/box15.png</file>
-        <file>images/box16.png</file>
-        <file>images/box17.png</file>
+        <file>images/box1.jpg</file>
+        <file>images/box2.jpg</file>
+        <file>images/box3.jpg</file>
+        <file>images/box4.jpg</file>
+        <file>images/box5.jpg</file>
+        <file>images/box6.jpg</file>
+        <file>images/box7.jpg</file>
+        <file>images/box8.jpg</file>
+        <file>images/box9.jpg</file>
+        <file>images/box10.jpg</file>
+        <file>images/box11.jpg</file>
+        <file>images/box12.jpg</file>
+        <file>images/box13.jpg</file>
+        <file>images/box14.jpg</file>
+        <file>images/box15.jpg</file>
+        <file>images/box16.jpg</file>
+        <file>images/box17.jpg</file>
     </qresource>
 </RCC>
